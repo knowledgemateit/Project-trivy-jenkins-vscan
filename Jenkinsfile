@@ -9,10 +9,19 @@ pipeline {
 	stages {
 		stage('Build') {
 			steps {
-				sh 'pwd'
-				sh 'ls'
-				sh 'chmod 777 run.sh'
-				sh './run.sh'
+
+				sh 'echo "Building Java web application..."'
+				sh 'mvn clean install'
+				
+				sh 'echo "Copying WAR to Docker build directory..."'
+				sh 'cp target/docker-java-sample-webapp-1.0-SNAPSHOT.war src/main/docker/'
+				
+				sh 'echo "Building Docker image..."'
+				dir('src/main/docker') {
+					sh 'docker build -t ${IMAGE_NAME} .'
+				}
+				
+				sh 'echo "Build complete!"'
 			}
 		}
 
