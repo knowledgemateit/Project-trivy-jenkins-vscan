@@ -1,20 +1,5 @@
 # Quick Start - Amazon Linux
 
-## One-Command Setup (Automated)
-
-On your Amazon Linux 2 EC2 instance:
-
-```bash
-curl -sSL https://raw.githubusercontent.com/<your-repo>/setup-amazon-linux.sh | bash
-```
-
-Or download and run locally:
-
-```bash
-chmod +x setup-amazon-linux.sh
-sudo ./setup-amazon-linux.sh
-```
-
 This installs everything automatically:
 - ✅ Java 8
 - ✅ Maven
@@ -24,7 +9,7 @@ This installs everything automatically:
 
 ---
 
-## Manual Setup (If Preferred)
+## Manual Setup 
 
 ### System Update
 ```bash
