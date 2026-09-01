@@ -51,6 +51,18 @@ sudo yum install -y jenkins
 sudo systemctl start jenkins && sudo systemctl enable jenkins
 sudo usermod -a -G docker jenkins
 sudo systemctl restart jenkins
+
+# Fix temp Issue Jenkins
+sudo mkdir -p /etc/systemd/system/jenkins.service.d
+sudo bash -c 'cat > /etc/systemd/system/jenkins.service.d/override.conf <<EOF
+[Service]
+Environment="JAVA_OPTS=-Djava.io.tmpdir=/var/lib/jenkins/tmp"
+EOF'
+
+sudo mkdir -p /var/lib/jenkins/tmp
+sudo chown jenkins:jenkins /var/lib/jenkins/tmp
+sudo systemctl daemon-reload
+sudo systemctl restart jenkins
 ```
 
 ---
