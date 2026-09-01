@@ -13,13 +13,14 @@ This installs everything automatically:
 
 ### System Update
 ```bash
-sudo yum update -y && sudo yum upgrade -y
+sudo dnf update -y
 ```
 
 ### Install Each Component
 ```bash
 # Java 8
-sudo yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel
+sudo dnf update -y
+sudo dnf install java-21-amazon-corretto -y
 
 # Maven
 sudo yum install -y maven
@@ -30,13 +31,22 @@ sudo systemctl start docker && sudo systemctl enable docker
 sudo usermod -a -G docker ec2-user
 
 # Trivy
-wget https://github.com/aquasecurity/trivy/releases/download/v0.50.1/trivy_0.50.1_Linux-64bit.tar.gz
-tar zxvf trivy_0.50.1_Linux-64bit.tar.gz
-sudo mv trivy /usr/local/bin/
+cat << EOF | sudo tee /etc/yum.repos.d/trivy.repo
+[trivy]
+name=Trivy repository
+baseurl=https://aquasecurity.github.io/trivy-repo/rpm/releases/\$basearch/
+gpgcheck=1
+enabled=1
+gpgkey=https://aquasecurity.github.io/trivy-repo/rpm/public.key
+EOF
+
+sudo yum -y update
+sudo yum -y install trivy
+
 
 # Jenkins
 sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
-sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
 sudo yum install -y jenkins
 sudo systemctl start jenkins && sudo systemctl enable jenkins
 sudo usermod -a -G docker jenkins
