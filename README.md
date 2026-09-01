@@ -2,26 +2,67 @@
 
 A simple Java web application with automated vulnerability scanning via Trivy in Jenkins CI/CD.
 
-## Requirements
+## Quick Start
 
+### For Amazon Linux 2 Server
+
+See **[QUICK_START.md](QUICK_START.md)** for instant setup, or **[SETUP_AMAZON_LINUX.md](SETUP_AMAZON_LINUX.md)** for detailed steps.
+
+**One-command setup:**
+```bash
+chmod +x setup-amazon-linux.sh
+sudo ./setup-amazon-linux.sh
+```
+
+### Local Development
+
+**Requirements:**
 - Java 8+
 - Maven 3.6+
 - Docker
-- Trivy (installed on Jenkins agent)
+- Trivy
 
-## Local Build & Test
-
+**Build:**
 ```bash
 ./run.sh
 ```
 
-This builds the Java application, creates a Docker image, and prepares for scanning.
+## How It Works
 
-## Jenkins Pipeline
+The `Jenkinsfile` pipeline has 3 stages:
 
-The `Jenkinsfile` automatically:
-1. **Build** — Compiles Java app and creates Docker image
-2. **Scan** — Runs Trivy vulnerability scan on the image
-3. **Report** — Archives scan results and emails on failure
+1. **Build** → Compiles Java app and creates Docker image
+2. **Scan** → Runs Trivy vulnerability scan on the image  
+3. **Report** → Archives results and emails on failure
 
-The scan report is saved as `trivy-report.json` and available as an artifact in Jenkins.
+Output: `trivy-report.json` (available in Jenkins artifacts)
+
+## Project Files
+
+| File | Purpose |
+|------|---------|
+| `Jenkinsfile` | Jenkins CI/CD pipeline definition |
+| `run.sh` | Local build script |
+| `pom.xml` | Maven project configuration |
+| `src/main/docker/Dockerfile` | Docker image definition |
+| `src/main/java/` | Java servlet source code |
+| `SETUP_AMAZON_LINUX.md` | Detailed Amazon Linux setup guide |
+| `QUICK_START.md` | Quick reference for setup |
+| `setup-amazon-linux.sh` | Automated installation script |
+
+## Project Structure
+
+```
+.
+├── Jenkinsfile
+├── run.sh
+├── pom.xml
+├── README.md
+├── QUICK_START.md
+├── SETUP_AMAZON_LINUX.md
+├── setup-amazon-linux.sh
+└── src/main/
+    ├── java/com/sap/docker/
+    ├── webapp/WEB-INF/
+    └── docker/Dockerfile
+```
